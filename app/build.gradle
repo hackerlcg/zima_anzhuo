@@ -1,0 +1,287 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+def vests = ["baitiao360","loanmarket", "daikuankuai"] as String[]
+def vest2Channel = [
+        "baitiao360" : ["baidu", "market91", "anzhuomarket", "market360", "yingyongbao", "xiaomi", "huawei", "VIVO", "OPPO", "meizu",
+                        "chuizi", "wandoujia", "samsung", "mumayi", "Nduo", "anzhi", "sougou", "letv", "liqumarket", "youyi", "anfen",
+                        "anzhuoyuan", "anbei", "lvan", "PC6", "H5"],
+        "loanmarket" : ["baidu", "market91", "anzhuomarket", "market360", "yingyongbao", "xiaomi", "huawei", "VIVO", "OPPO", "meizu",
+                        "chuizi", "wandoujia", "samsung", "mumayi", "Nduo", "anzhi", "sougou", "letv", "liqumarket", "youyi", "anfen",
+                        "anzhuoyuan", "anbei", "lvan", "PC6", "H5"],
+
+        "daikuankuai": ["baidu002", "market360_002", "yingyongbao002", "xiaomi002", "huawei002", "VIVO002", "OPPO002", "meizu002", "alibaba002"]
+]
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.beihui.market"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        renderscriptTargetApi 25
+        renderscriptSupportModeEnabled true
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
+                GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
+                GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
+
+                UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
+
+                TENCENT_DATA    : "tencent1106217443",
+
+                UMENG_CHANNEL   : "native",
+                CHANNEL_ID      : "native",
+
+                PACKAGE_NAME    : applicationId
+        ]
+    }
+
+    signingConfigs {
+        baitiao360 {
+            storeFile file('../baitiao360.jks')
+            storePassword "123456"
+            keyAlias "baitiao360"
+            keyPassword "123456"
+        }
+
+        loanmarket {
+            storeFile file('../loanMarket.jks')
+            storePassword "123456"
+            keyAlias "loanMarket"
+            keyPassword "123456"
+        }
+
+        daikuankuai {
+            storeFile file('../app/src/daikuankuai/daikuankuai.jks')
+            storePassword "123456"
+            keyAlias "daikuankuai"
+            keyPassword "123456"
+        }
+    }
+
+
+    buildTypes {
+        debug {
+//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+            signingConfig signingConfigs.baitiao360
+        }
+        preview {
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+        }
+        release {
+            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+        }
+
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+        loanmarket {
+            java.srcDir 'src/common/java'
+        }
+        daikuankuai {
+            java.srcDir 'src/commonvest/java'
+            res.srcDirs 'src/commonvest/res'
+        }
+        baitiao360 {
+            java.srcDir 'src/commonvest/java'
+            res.srcDirs 'src/commonvest/res'
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+
+    flavorDimensions("id", "channel")
+    productFlavors {
+
+        baitiao360 {
+            dimension "id"
+
+            applicationId "com.qianhua.baitiao360"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: applicationId
+            ]
+
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+
+            signingConfig signingConfigs.baitiao360
+        }
+
+        loanmarket {
+            dimension "id"
+
+            applicationId "com.beihui.market"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: applicationId
+            ]
+
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+
+            signingConfig signingConfigs.loanmarket
+        }
+
+        daikuankuai {
+            dimension "id"
+
+            applicationId "com.beiwo.daikuankuai"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: applicationId
+            ]
+
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/quickloan_registe.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/quickloan_know.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/quickloan_helpcenter.html\"")
+
+            signingConfig signingConfigs.daikuankuai
+        }
+
+        baidu { dimension "channel" }
+        market91 { dimension "channel" }
+        anzhuomarket { dimension "channel" }
+        market360 { dimension "channel" }
+        yingyongbao { dimension "channel" }
+        xiaomi { dimension "channel" }
+        huawei { dimension "channel" }
+        VIVO { dimension "channel" }
+        OPPO { dimension "channel" }
+        meizu { dimension "channel" }
+        chuizi { dimension "channel" }
+        wandoujia { dimension "channel" }
+        samsung { dimension "channel" }
+        mumayi { dimension "channel" }
+        Nduo { dimension "channel" }
+        anzhi { dimension "channel" }
+        sougou { dimension "channel" }
+        letv { dimension "channel" }
+        liqumarket { dimension "channel" }
+        youyi { dimension "channel" }
+        anfen { dimension "channel" }
+        anzhuoyuan { dimension "channel" }
+        anbei { dimension "channel" }
+        lvan { dimension "channel" }
+        PC6 { dimension "channel" }
+        H5 { dimension "channel" }
+
+        baidu002 { dimension "channel" }
+        market360_002 { dimension "channel" }
+        yingyongbao002 { dimension "channel" }
+        xiaomi002 { dimension "channel" }
+        huawei002 { dimension "channel" }
+        VIVO002 { dimension "channel" }
+        OPPO002 { dimension "channel" }
+        meizu002 { dimension "channel" }
+        alibaba002 { dimension "channel" }
+
+        productFlavors.all { flavor ->
+            manifestPlaceholders.putAll([
+                    UMENG_CHANNEL: name,
+                    CHANNEL_ID   : name
+            ])
+
+        }
+    }
+
+    variantFilter { variant ->
+        def vest = variant.flavors[0].name
+        def channel = variant.flavors[1].name
+        //过滤渠道
+        if (vests.contains(vest)) {
+            def channels = vest2Channel.get(vest)
+            if (!channels.contains(channel)) {
+                variant.setIgnore(true)
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        def items = variant.baseName.split("-")
+        def path = "../loanMarket-apks/" + items[0] + "/" + variant.getBaseName() + ".apk"
+        def file = new File(path)
+        variant.outputs.each { output ->
+            output.setOutputFile(file)
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile project(':socialshare')
+
+    //noinspection GradleCompatible
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    testCompile 'junit:junit:4.12'
+
+    //Retrofit
+    compile('com.squareup.retrofit2:retrofit:2.3.0', {
+        exclude module: 'okhttp'
+    })
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    //OkHttp
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    //RxJava
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //Dagger2
+    compile 'com.google.dagger:dagger:2.7'
+    apt 'com.google.dagger:dagger-compiler:2.7'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    //ButterKnife
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    //EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //Glide Image Loader
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //个推
+    compile 'com.getui:sdk:2.10.2.0'
+    //umeng统计
+    compile 'com.umeng.analytics:analytics:6.1.2'
+
+    /*View Lib*/
+    //MarqueeView
+    compile 'com.sunfusheng:marqueeview:1.2.0'
+    //StatusBar
+    compile 'com.gyf.barlibrary:barlibrary:2.2.5'
+    //RecyclerView Adapter Helper
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
+    //Banner
+    compile 'com.youth.banner:banner:1.4.9'
+    //round image view
+    compile 'com.makeramen:roundedimageview:2.3.0'
+    //shaped image view
+    compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.4'
+
+    //Permission
+    compile "com.github.hotchemi:permissionsdispatcher:2.4.0"
+    apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5591FF</color>
+    <color name="colorPrimaryDark">#5591FF</color>
+    <color name="colorAccent">#5591FF</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="common_bg">#f0f0f0</color>
+
+    <color name="grey_a900">#44212121</color>
+    <color name="line">#e7e7e7</color>
+    <color name="c_f1eff2">#f1eff2</color>
+
+
+    <color name="c_222222">#222222</color>
+    <color name="c_333333">#333333</color>
+    <color name="c_666666">#666666</color>
+    <color name="c_999999">#999999</color>
+
+    <color name="black_1">#424251</color>
+    <color name="black_2">#909298</color>
+
+
+    <color name="login1">#528bff</color>
+    <color name="login2">#52bbff</color>
+
+
+    <color name="c_2b4473">#2b4473</color>
+
+
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+
+    <color name="ghost_white">#f8f8ff</color>
+    <color name="floral_white">#fff8f0</color>
+</resources>
